@@ -4,8 +4,6 @@ import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import Table from '../components/common/Table';
-import { getDashboardStats, getRecentDeals, getActiveBlasts } from '../services/api';
-import { formatCurrency, formatNumber, formatDate } from '../utils/formatters';
 
 const DashboardPage = () => {
     const [stats, setStats] = useState({
@@ -15,7 +13,6 @@ const DashboardPage = () => {
         avgOpenRate: 0
     });
     const [recentDeals, setRecentDeals] = useState([]);
-    const [activeBlasts, setActiveBlasts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [revenueData] = useState([42, 58, 71, 63, 88, 79, 95]);
 
