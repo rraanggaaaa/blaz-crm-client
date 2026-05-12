@@ -80,7 +80,7 @@ const LoginPage = ({ onLogin }) => {
             <div className="absolute top-40 right-20 w-8 h-8 bg-purple-300/20 rounded-lg rotate-45 animate-float"></div>
 
             {/* Login Card */}
-            <div className="relative z-10 w-[440px] bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 transform transition-all duration-500 hover:shadow-3xl">
+            <div className="relative m-6 z-10 w-[440px] bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 transform transition-all duration-500 hover:shadow-3xl">
                 {/* Logo/Brand */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#667eea] to-[#764ba2] rounded-2xl shadow-lg mb-4">
