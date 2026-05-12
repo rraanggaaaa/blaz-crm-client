@@ -5,7 +5,7 @@ import DashboardPage from './pages/DashboardPage';
 
 // Main App Content (protected by auth)
 const AppContent = () => {
-  const { isAuthenticated, user, login, logout } = useAuth();
+  const { isAuthenticated, user, login } = useAuth();
 
   // Jika belum login, tampilkan halaman login
   if (!isAuthenticated) {
