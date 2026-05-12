@@ -23,8 +23,6 @@ const DashboardPage = () => {
     const loadDashboardData = async () => {
         try {
             const [statsRes, dealsRes] = await Promise.all([
-                getDashboardStats(),
-                getRecentDeals()
             ]);
             setStats(statsRes.data);
             setRecentDeals(dealsRes.data);
@@ -38,7 +36,6 @@ const DashboardPage = () => {
     const dealColumns = [
         { key: 'company_name', header: 'Perusahaan', render: (val) => <span className="font-semibold">{val}</span> },
         { key: 'pic_name', header: 'PIC', render: (val) => <span className="text-[#7D8590]">{val || '-'}</span> },
-        { key: 'value', header: 'Nilai', render: (val) => <span className="text-[#00C853] font-semibold">{formatCurrency(val)}</span> },
         {
             key: 'stage', header: 'Stage', render: (val) => {
                 const variant = val === 'Closing' ? 'success' : val === 'Negosiasi' ? 'warning' : 'info';
@@ -95,7 +92,6 @@ const DashboardPage = () => {
                             },
                             { key: 'status', header: 'Status', render: (val) => <Badge variant={val === 'Selesai' ? 'success' : 'warning'}>{val}</Badge> }
                         ]}
-                        data={activeBlasts}
                     />
                 </Card>
 
