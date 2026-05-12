@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://blaz-crm-server.vercel.app/api/$1"
+    }
+  ]
+}
