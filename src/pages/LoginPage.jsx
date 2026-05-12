@@ -226,7 +226,7 @@ const LoginPage = ({ onLogin }) => {
                 {/* Footer */}
                 <div className="mt-6 pt-4 border-t border-gray-100 text-center">
                     <p className="text-xs text-gray-400">
-                        © 2024 BlazCRM. All rights reserved.
+                        © 2026 BlazCRM. All rights reserved. Deployed by Rangga
                     </p>
                 </div>
             </div>

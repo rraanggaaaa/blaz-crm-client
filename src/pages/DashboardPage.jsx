@@ -371,8 +371,8 @@ Balas pesan ini untuk info lebih lanjut.`);
                                 if (isMobile) setSidebarOpen(false);
                             }}
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium cursor-pointer transition-all duration-200 ${activePage === item.id
-                                    ? 'bg-[var(--greenp)] text-[var(--green)]'
-                                    : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+                                ? 'bg-[var(--greenp)] text-[var(--green)]'
+                                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
                                 } ${!sidebarOpen && 'lg:justify-center'}`}
                             title={!sidebarOpen ? item.label : ''}
                         >
@@ -397,8 +397,8 @@ Balas pesan ini untuk info lebih lanjut.`);
                                 if (isMobile) setSidebarOpen(false);
                             }}
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium cursor-pointer transition-all duration-200 ${activePage === item.id
-                                    ? 'bg-[var(--greenp)] text-[var(--green)]'
-                                    : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+                                ? 'bg-[var(--greenp)] text-[var(--green)]'
+                                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
                                 } ${!sidebarOpen && 'lg:justify-center'}`}
                             title={!sidebarOpen ? item.label : ''}
                         >
@@ -419,8 +419,8 @@ Balas pesan ini untuk info lebih lanjut.`);
                                 if (isMobile) setSidebarOpen(false);
                             }}
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium cursor-pointer transition-all duration-200 ${activePage === item.id
-                                    ? 'bg-[var(--greenp)] text-[var(--green)]'
-                                    : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+                                ? 'bg-[var(--greenp)] text-[var(--green)]'
+                                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
                                 } ${!sidebarOpen && 'lg:justify-center'}`}
                             title={!sidebarOpen ? item.label : ''}
                         >
@@ -517,6 +517,12 @@ Balas pesan ini untuk info lebih lanjut.`);
                     {/* DASHBOARD PAGE - Responsive Grid */}
                     <div className={activePage === 'dashboard' ? 'space-y-4 md:space-y-6' : 'hidden'}>
                         {/* Stats Grid - Responsive: 1 col on mobile, 2 col on tablet, 4 col on desktop */}
+
+                        <div className="mt-6 pt-4 border-t border-gray-100 text-center">
+                            <p className="text-xs text-gray-400">
+                                © 2026 BlazCRM. All rights reserved. Deployed by Rangga
+                            </p>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
                             <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-5 hover:border-[var(--green)]/30 transition-all duration-200">
                                 <div className="flex items-center justify-between mb-2 md:mb-3">
@@ -620,8 +626,8 @@ Balas pesan ini untuk info lebih lanjut.`);
                                                 <td className="px-3 md:px-5 py-2 md:py-3 text-xs md:text-sm font-medium text-[var(--green)]">{formatCurrency(deal.value || 0)}</td>
                                                 <td className="px-3 md:px-5 py-2 md:py-3 hidden lg:table-cell">
                                                     <span className={`inline-flex px-1.5 py-0.5 md:px-2 md:py-1 rounded-full text-[9px] md:text-xs font-medium ${deal.stage === 'Closing' ? 'bg-green-500/20 text-[var(--green)]' :
-                                                            deal.stage === 'Negosiasi' ? 'bg-yellow-500/20 text-[var(--warn)]' :
-                                                                'bg-blue-500/20 text-[var(--blue)]'
+                                                        deal.stage === 'Negosiasi' ? 'bg-yellow-500/20 text-[var(--warn)]' :
+                                                            'bg-blue-500/20 text-[var(--blue)]'
                                                         }`}>
                                                         {deal.stage || 'Prospek'}
                                                     </span>
