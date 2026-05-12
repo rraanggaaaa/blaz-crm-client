@@ -21,7 +21,7 @@ const App = () => {
   // Blast State
   const [blastRunning, setBlastRunning] = useState(false);
   const [blastCurrent, setBlastCurrent] = useState(0);
-  const [blastTotal, setBlastTotal] = useState(3200);
+  const [blastTotal] = useState(3200);
   const [blastInterval, setBlastInterval] = useState(null);
   const [blastName, setBlastName] = useState('');
   const [blastGroup, setBlastGroup] = useState(0);
@@ -47,6 +47,7 @@ Balas pesan ini untuk info lebih lanjut.`);
     { name: 'Fitri Handayani', phone: '0855-9999-0000', city: 'Makassar', group: 'VIP', status: 'active', color: '#B71C1C' },
   ]);
   const [contactFilter, setContactFilter] = useState('');
+  const [selectedAll, setSelectedAll] = useState(false);
 
   // Modal State
   const [modals, setModals] = useState({
@@ -156,6 +157,34 @@ Balas pesan ini untuk info lebih lanjut.`);
     showToast('✅ Kontak baru ditambahkan!', 'success');
   };
 
+  const selectAllContacts = (e) => {
+    const isChecked = e.target.checked;
+    setSelectedAll(isChecked);
+  };
+
+  // File Upload Handlers
+  const handleFileUpload = (event) => {
+    if (event.target.files[0]) {
+      showToast('📄 File "' + event.target.files[0].name + '" siap diimport', 'info');
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag');
+  };
+
+  const handleDragLeave = (e) => {
+    e.currentTarget.classList.remove('drag');
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (file) showToast('📄 File "' + file.name + '" siap diimport', 'info');
+  };
+
   // Template Variables
   const insertVar = (v) => {
     const textarea = document.getElementById('blast-template');
@@ -189,6 +218,10 @@ Balas pesan ini untuk info lebih lanjut.`);
   const groupNumbers = [1247, 543, 289, 124, 78];
   const groupNames = ['Semua Kontak (1.247)', 'Pelanggan Aktif (543)', 'Leads Baru (289)', 'Follow-up Juni (124)', 'VIP Customer (78)'];
 
+  const handleGroupChange = (e) => {
+    setBlastGroup(parseInt(e.target.value));
+  };
+
   const getEstimatedTime = () => {
     const mins = Math.round(groupNumbers[blastGroup] * 5 / 60);
     return mins > 60 ? `~${Math.floor(mins / 60)} jam ${mins % 60} menit` : `~${mins} menit`;
@@ -198,44 +231,117 @@ Balas pesan ini untuk info lebih lanjut.`);
   const revenueData = [42, 58, 71, 63, 88, 79, 95];
   const blastChartData = [2400, 3100, 5200, 4800, 12480];
 
-  // Navigation
-  const NavItem = ({ icon, label, page, section }) => {
-    if (section) {
-      return <div className="text-[10px] font-bold tracking-[1.5px] text-[var(--muted)] px-3 pt-[14px] pb-1.5 uppercase">{label}</div>;
-    }
-    return (
-      <div
-        onClick={() => setActivePage(page)}
-        className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
-          activePage === page
-            ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
-            : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
-        }`}
-      >
-        <span className="text-base w-5 text-center">{icon}</span>
-        {label}
-      </div>
-    );
+  // CSS Variables for styling
+  const cssVariables = {
+    '--bg': '#0D1117',
+    '--bg2': '#161B22',
+    '--bg3': '#21262D',
+    '--bg4': '#30363D',
+    '--text': '#E6EDF3',
+    '--muted': '#7D8590',
+    '--mid': '#B0BAC5',
+    '--green': '#00C853',
+    '--green2': '#43A047',
+    '--greenp': 'rgba(0,200,83,0.12)',
+    '--wa': '#25D366',
+    '--border': 'rgba(255,255,255,0.08)',
+    '--warn': '#FFBD2E',
+    '--red': '#FF5F57',
+    '--blue': '#58A6FF',
+    '--r': '10px',
+    '--rl': '16px',
   };
 
   return (
-    <div className="flex h-screen overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+    <div className="flex h-screen overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]" style={{ ...cssVariables, background: 'var(--bg)', color: 'var(--text)' }}>
       {/* SIDEBAR */}
       <aside className="w-[220px] min-w-[220px] bg-[var(--bg2)] border-r border-[var(--border)] flex flex-col">
         <div className="px-[18px] pt-5 pb-4 border-b border-[var(--border)] text-lg font-extrabold">
           Blaz<span className="text-[var(--green)]">CRM</span>
         </div>
         <nav className="flex-1 px-2.5 py-3 flex flex-col gap-0.5">
-          <NavItem icon="📊" label="Dashboard" page="dashboard" />
-          <NavItem icon="🏗️" label="Pipeline" page="pipeline" />
-          <NavItem icon="👥" label="Kontak" page="contacts" />
+          <div
+            onClick={() => setActivePage('dashboard')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'dashboard'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">📊</span> Dashboard
+          </div>
+          <div
+            onClick={() => setActivePage('pipeline')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'pipeline'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">🏗️</span> Pipeline
+          </div>
+          <div
+            onClick={() => setActivePage('contacts')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'contacts'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">👥</span> Kontak
+          </div>
           <div className="text-[10px] font-bold tracking-[1.5px] text-[var(--muted)] px-3 pt-[14px] pb-1.5 uppercase">WhatsApp</div>
-          <NavItem icon="📱" label="Koneksi WA" page="connect" />
-          <NavItem icon="📤" label="WA Blast" page="blast" />
-          <NavItem icon="📋" label="Riwayat Blast" page="blastlog" />
+          <div
+            onClick={() => setActivePage('connect')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'connect'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">📱</span> Koneksi WA
+          </div>
+          <div
+            onClick={() => setActivePage('blast')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'blast'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">📤</span> WA Blast
+          </div>
+          <div
+            onClick={() => setActivePage('blastlog')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'blastlog'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">📋</span> Riwayat Blast
+          </div>
           <div className="text-[10px] font-bold tracking-[1.5px] text-[var(--muted)] px-3 pt-[14px] pb-1.5 uppercase">Laporan</div>
-          <NavItem icon="📈" label="Analytics" page="analytics" />
-          <NavItem icon="⚙️" label="Pengaturan" page="settings" />
+          <div
+            onClick={() => setActivePage('analytics')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'analytics'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">📈</span> Analytics
+          </div>
+          <div
+            onClick={() => setActivePage('settings')}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-[var(--r)] text-[13px] font-medium cursor-pointer transition-all duration-150 ${
+              activePage === 'settings'
+                ? 'bg-[var(--greenp)] text-[var(--green)] font-bold'
+                : 'text-[var(--muted)] hover:bg-[var(--bg3)] hover:text-[var(--text)]'
+            }`}
+          >
+            <span className="text-base w-5 text-center">⚙️</span> Pengaturan
+          </div>
         </nav>
         <div className="p-3 border-t border-[var(--border)]">
           <div
@@ -272,7 +378,7 @@ Balas pesan ini untuk info lebih lanjut.`);
           )}
 
           {/* DASHBOARD PAGE */}
-          <div className={`page ${activePage === 'dashboard' ? 'active' : 'hidden'}`}>
+          <div className={activePage === 'dashboard' ? 'block' : 'hidden'}>
             <div className="grid grid-cols-4 gap-3.5 mb-5">
               <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[var(--rl)] p-[18px_20px]">
                 <div className="text-[28px] font-extrabold leading-none text-[var(--green)]">Rp 284jt</div>
@@ -354,7 +460,7 @@ Balas pesan ini untuk info lebih lanjut.`);
           </div>
 
           {/* CONNECT PAGE */}
-          <div className={`page ${activePage === 'connect' ? 'active' : 'hidden'}`}>
+          <div className={activePage === 'connect' ? 'block' : 'hidden'}>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[var(--rl)] p-5">
                 <div className="text-sm font-bold mb-4">Koneksi WhatsApp</div>
@@ -425,7 +531,7 @@ Balas pesan ini untuk info lebih lanjut.`);
           </div>
 
           {/* BLAST PAGE */}
-          <div className={`page ${activePage === 'blast' ? 'active' : 'hidden'}`}>
+          <div className={activePage === 'blast' ? 'block' : 'hidden'}>
             {blastRunning && (
               <div className="bg-[var(--bg2)] border border-[rgba(0,200,83,0.2)] rounded-[var(--rl)] p-5 mb-4">
                 <div className="flex items-center justify-between mb-3.5">
@@ -513,7 +619,7 @@ Balas pesan ini untuk info lebih lanjut.`);
           </div>
 
           {/* BLAST LOG PAGE */}
-          <div className={`page ${activePage === 'blastlog' ? 'active' : 'hidden'}`}>
+          <div className={activePage === 'blastlog' ? 'block' : 'hidden'}>
             <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[var(--rl)] p-5">
               <div className="flex items-center justify-between text-sm font-bold mb-4">Riwayat Blast <span className="text-[var(--muted)] font-normal text-xs">Total 24 kampanye</span></div>
               <table className="w-full border-collapse">
@@ -546,7 +652,7 @@ Balas pesan ini untuk info lebih lanjut.`);
           </div>
 
           {/* CONTACTS PAGE */}
-          <div className={`page ${activePage === 'contacts' ? 'active' : 'hidden'}`}>
+          <div className={activePage === 'contacts' ? 'block' : 'hidden'}>
             <div className="flex gap-3 mb-4 items-center">
               <div className="flex-1 flex gap-2.5">
                 <input type="text" value={contactFilter} onChange={(e) => setContactFilter(e.target.value)} placeholder="🔍 Cari nama, nomor, kota..." className="flex-1 bg-[var(--bg3)] border border-[var(--border)] rounded-lg px-3.5 py-2 text-[13px] text-[var(--text)] focus:outline-none focus:border-[var(--green)]" />
@@ -579,8 +685,8 @@ Balas pesan ini untuk info lebih lanjut.`);
             </div>
           </div>
 
-          {/* PIPELINE PAGE (Simplified) */}
-          <div className={`page ${activePage === 'pipeline' ? 'active' : 'hidden'}`}>
+          {/* PIPELINE PAGE */}
+          <div className={activePage === 'pipeline' ? 'block' : 'hidden'}>
             <div className="flex justify-between items-center mb-4">
               <div className="text-[13px] text-[var(--muted)]">Total Pipeline: <strong className="text-[var(--green)]">Rp 895jt</strong></div>
               <button onClick={() => openModal('addDeal')} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-semibold bg-[var(--green)] text-white hover:bg-[var(--green2)]">+ Deal Baru</button>
@@ -596,9 +702,8 @@ Balas pesan ini untuk info lebih lanjut.`);
             </div>
           </div>
 
-          {/* ANALYTICS PAGE (Simplified) */}
-          {/* SETTINGS PAGE (Simplified) */}
-          <div className={`page ${activePage === 'analytics' ? 'active' : 'hidden'}`}>
+          {/* ANALYTICS PAGE */}
+          <div className={activePage === 'analytics' ? 'block' : 'hidden'}>
             <div className="grid grid-cols-4 gap-3.5 mb-5">
               <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[var(--rl)] p-[18px_20px]"><div className="text-[28px] font-extrabold text-[var(--green)]">284jt</div><div className="text-xs text-[var(--muted)] mt-1.5">Revenue (juta Rp)</div></div>
               <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[var(--rl)] p-[18px_20px]"><div className="text-[28px] font-extrabold text-[var(--blue)]">98.2%</div><div className="text-xs text-[var(--muted)] mt-1.5">WA Open Rate</div></div>
@@ -616,7 +721,8 @@ Balas pesan ini untuk info lebih lanjut.`);
             </div>
           </div>
 
-          <div className={`page ${activePage === 'settings' ? 'active' : 'hidden'}`}>
+          {/* SETTINGS PAGE */}
+          <div className={activePage === 'settings' ? 'block' : 'hidden'}>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[var(--rl)] p-5">
                 <div className="text-sm font-bold mb-4">Profil Bisnis</div>
@@ -698,11 +804,12 @@ Balas pesan ini untuk info lebih lanjut.`);
         .animate-slide-in {
           animation: slide-in 0.3s ease-out forwards;
         }
-        .page.active {
-          display: block;
+        .animate-spin {
+          animation: spin 1s linear infinite;
         }
-        .page:not(.active) {
-          display: none;
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </div>
